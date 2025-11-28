@@ -11,7 +11,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bitácora Viajera v1.0\n\nDesarrollado por: [Tu Nombre]"
+        android:text="Bitácora Viajera (TravelLog) v1.3\n\nDesarrollado por Jeremy Guajardo
+        \nAplicación para proyecto Estudiantil."
         android:textAlignment="center"
         android:textSize="18sp" />
 
