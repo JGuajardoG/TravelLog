@@ -39,6 +39,7 @@ public class ViajeDAO {
 
     /**
      * Abre una conexión escribible a la base de datos.
+     * Debe llamarse antes de cualquier operación de base de datos.
      */
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
@@ -46,6 +47,7 @@ public class ViajeDAO {
 
     /**
      * Cierra la conexión a la base de datos.
+     * Debe llamarse cuando ya no se necesite acceder a la base de datos para liberar recursos.
      */
     public void close() {
         dbHelper.close();
@@ -53,7 +55,10 @@ public class ViajeDAO {
 
     /**
      * Crea un nuevo viaje en la base de datos.
-     * @return El objeto Viaje recién creado, o null si falla.
+     * @param idUsuario El ID del usuario al que pertenece el viaje.
+     * @param nombreViaje El nombre del nuevo viaje.
+     * @param fecha La fecha del nuevo viaje.
+     * @return El objeto Viaje recién creado, o null si la inserción falla.
      */
     public Viaje createViaje(int idUsuario, String nombreViaje, String fecha) {
         ContentValues values = new ContentValues();
@@ -63,7 +68,7 @@ public class ViajeDAO {
 
         long insertId = database.insert(DatabaseHelper.TABLE_VIAJES, null, values);
         if (insertId == -1) {
-            return null;
+            return null; // Retorna null si hubo un error en la inserción.
         }
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_VIAJES, allColumns, DatabaseHelper.COLUMN_VIAJE_ID + " = " + insertId, null, null, null, null);
@@ -74,7 +79,10 @@ public class ViajeDAO {
     }
 
     /**
-     * Actualiza un viaje existente.
+     * Actualiza un viaje existente en la base de datos.
+     * @param idViaje El ID del viaje a actualizar.
+     * @param nombreViaje El nuevo nombre para el viaje.
+     * @param fecha La nueva fecha para el viaje.
      * @return El número de filas afectadas (debería ser 1 si fue exitoso).
      */
     public int updateViaje(int idViaje, String nombreViaje, String fecha) {
@@ -86,15 +94,16 @@ public class ViajeDAO {
     }
 
     /**
-     * Elimina un viaje de la base de datos.
+     * Elimina un viaje de la base de datos usando su ID.
+     * @param idViaje El ID del viaje a eliminar.
      */
     public void deleteViaje(int idViaje) {
-        System.out.println("Viaje eliminado con id: " + idViaje);
         database.delete(DatabaseHelper.TABLE_VIAJES, DatabaseHelper.COLUMN_VIAJE_ID + " = " + idViaje, null);
     }
 
     /**
-     * Obtiene todos los viajes para un usuario específico.
+     * Obtiene todos los viajes pertenecientes a un usuario específico.
+     * @param idUsuario El ID del usuario cuyos viajes se quieren recuperar.
      * @return Una lista de objetos Viaje.
      */
     public List<Viaje> getViajesByUsuario(int idUsuario) {
@@ -112,8 +121,9 @@ public class ViajeDAO {
     }
     
     /**
-     * Obtiene un solo viaje por su ID.
-     * @return El objeto Viaje o null si no se encuentra.
+     * Obtiene un único viaje por su ID.
+     * @param idViaje El ID del viaje a buscar.
+     * @return El objeto Viaje encontrado, o null si no existe.
      */
     public Viaje getViajeById(int idViaje) {
         Cursor cursor = database.query(DatabaseHelper.TABLE_VIAJES, allColumns, DatabaseHelper.COLUMN_VIAJE_ID + " = " + idViaje, null, null, null, null);
@@ -127,7 +137,9 @@ public class ViajeDAO {
     }
 
     /**
-     * Mapea un objeto Cursor a un objeto Viaje.
+     * Método privado de utilidad para convertir una fila del Cursor en un objeto Viaje.
+     * @param cursor El Cursor posicionado en la fila deseada.
+     * @return Un objeto Viaje con los datos del cursor.
      */
     private Viaje cursorToViaje(Cursor cursor) {
         Viaje viaje = new Viaje();

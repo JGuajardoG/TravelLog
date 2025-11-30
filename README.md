@@ -8,12 +8,28 @@ Un proyecto de aplicación para Android desarrollada como parte de un desafío e
 
 ---
 
+## Arquitectura Utilizada
+
+El proyecto sigue una variación del patrón arquitectónico **Model-View-Controller (MVC)**, adaptado al desarrollo clásico de Android:
+
+-   **Model (Modelo):** Representa la capa de datos y la lógica de negocio.
+    -   **Clases POJO** (`Usuario`, `Viaje`, `Lugar`): Definen la estructura de los datos.
+    -   **Clases DAO** (`ViajeDAO`, `LugarDAO`): Encapsulan toda la lógica de acceso a la base de datos (CRUD), separando las responsabilidades.
+    -   **DatabaseHelper**: Gestiona la creación y versión de la base de datos SQLite.
+
+-   **View (Vista):** Es la capa de la interfaz de usuario, definida exclusivamente en los archivos **XML** (`activity_*.xml`, `item_*.xml`). Su única responsabilidad es mostrar los datos.
+
+-   **Controller (Controlador):** Actúa como el intermediario. Las **Activities** (`LoginActivity`, `ListaViajesActivity`, etc.) asumen este rol. Reciben las acciones del usuario, se comunican con el Modelo (los DAO) para procesar los datos y actualizan la Vista para mostrar el resultado.
+
+Esta estructura, especialmente con la inclusión de la capa DAO, promueve un código más limpio, mantenible y escalable.
+
+---
+
 ## Tecnologías Utilizadas
 
 - **Lenguaje:** Java
 - **Interfaz de Usuario (UI):** XML Clásico con componentes de Material Design.
-- **Base de Datos:** SQLite nativo, gestionado a través de una capa de acceso a datos (DAO) para una arquitectura limpia.
-- **Arquitectura:** Basada en Activities, con una clara separación de responsabilidades (UI -> Lógica -> DAO).
+- **Base de Datos:** SQLite nativo, gestionado a través de una capa de acceso a datos (DAO).
 - **API REST:** `HttpURLConnection` para consumir la API de [OpenWeatherMap](https://openweathermap.org/api).
 - **Dependencias Clave:**
   - `androidx.appcompat`

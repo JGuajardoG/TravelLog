@@ -11,6 +11,10 @@ import androidx.appcompat.widget.Toolbar;
 import com.myapp.travellog.dao.LugarDAO;
 import com.myapp.travellog.model.Lugar;
 
+/**
+ * Activity para editar la información de un lugar existente.
+ * Permite al usuario cambiar el nombre y el comentario.
+ */
 public class EditarLugarActivity extends AppCompatActivity {
 
     private EditText etNombreLugar, etComentario;
@@ -33,17 +37,22 @@ public class EditarLugarActivity extends AppCompatActivity {
         }
 
         lugarDAO = new LugarDAO(this);
+        // Recupera el ID del lugar a editar.
         idLugar = getIntent().getIntExtra("id_lugar", -1);
 
         etNombreLugar = findViewById(R.id.etNombreLugar);
         etComentario = findViewById(R.id.etComentario);
         btnActualizarLugar = findViewById(R.id.btnActualizarLugar);
 
+        // Carga los datos existentes en el formulario.
         cargarDatosLugar();
 
         btnActualizarLugar.setOnClickListener(v -> actualizarLugar());
     }
 
+    /**
+     * Obtiene los datos del lugar desde el DAO y los muestra en la UI.
+     */
     private void cargarDatosLugar() {
         lugarDAO.open();
         lugarActual = lugarDAO.getLugarById(idLugar);
@@ -54,10 +63,13 @@ public class EditarLugarActivity extends AppCompatActivity {
             etComentario.setText(lugarActual.getComentario());
         } else {
             Toast.makeText(this, "Error al cargar el lugar", Toast.LENGTH_SHORT).show();
-            finish();
+            finish(); // Cierra si no se puede cargar.
         }
     }
 
+    /**
+     * Recoge los datos del formulario y los actualiza en la DB a través del DAO.
+     */
     private void actualizarLugar() {
         String nombre = etNombreLugar.getText().toString().trim();
         String comentario = etComentario.getText().toString().trim();
@@ -73,7 +85,7 @@ public class EditarLugarActivity extends AppCompatActivity {
 
         if (rowsAffected > 0) {
             Toast.makeText(this, "Lugar actualizado con éxito", Toast.LENGTH_SHORT).show();
-            finish();
+            finish(); // Regresa a la lista de lugares.
         } else {
             Toast.makeText(this, "Error al actualizar el lugar", Toast.LENGTH_SHORT).show();
         }
