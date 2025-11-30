@@ -1,10 +1,16 @@
 package com.myapp.travellog.model;
 
+/**
+ * Clase POJO (Plain Old Java Object) que representa un Usuario.
+ * Contiene los getters y setters para acceder a sus atributos.
+ */
 public class Usuario {
     private int id;
     private String nombre;
     private String usuario;
     private String password;
+
+    // Getters y Setters
 
     public int getId() {
         return id;

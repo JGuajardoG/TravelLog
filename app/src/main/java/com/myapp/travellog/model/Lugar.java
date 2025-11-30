@@ -1,5 +1,9 @@
 package com.myapp.travellog.model;
 
+/**
+ * Clase POJO (Plain Old Java Object) que representa un Lugar.
+ * Contiene los getters y setters para acceder a sus atributos.
+ */
 public class Lugar {
     private int id;
     private int idViaje;
@@ -8,6 +12,8 @@ public class Lugar {
     private String fotoUri;
     private double latitud;
     private double longitud;
+
+    // Getters y Setters
 
     public int getId() {
         return id;
