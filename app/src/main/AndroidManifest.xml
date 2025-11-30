@@ -21,23 +21,25 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegistroActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".MenuPrincipalActivity"/>
-        <activity android:name=".CrearViajeActivity"/>
-        <activity android:name=".ListaViajesActivity"/>
-        <activity android:name=".DetalleViajeActivity"/>
-        <activity android:name=".AgregarLugarActivity"/>
-        <activity android:name=".ClimaActivity"/>
-        <activity android:name=".AcercaDeActivity"/>
+        <activity android:name=".LoginActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"/>
+        <activity android:name=".MenuPrincipalActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"/>
+        
+        <activity android:name=".RegistroActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".CrearViajeActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".EditarViajeActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".ListaViajesActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".DetalleViajeActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".AgregarLugarActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".EditarLugarActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".ClimaActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".AcercaDeActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -5,89 +5,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    tools:context=".RegistroActivity">
+    tools:context=".EditarLugarActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:title="Crear Nueva Cuenta"
+        app:title="Editar Lugar"
         app:titleTextColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilNombre"
+        android:id="@+id/tilNombreLugar"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:hint="Nombre Completo"
+        android:hint="Nombre del Lugar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etNombre"
+            android:id="@+id/etNombreLugar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName" />
+            android:inputType="textCapWords" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilUsuario"
+        android:id="@+id/tilComentario"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Nombre de Usuario"
-        app:layout_constraintEnd_toEndOf="@+id/tilNombre"
-        app:layout_constraintStart_toStartOf="@+id/tilNombre"
-        app:layout_constraintTop_toBottomOf="@+id/tilNombre">
+        android:hint="Comentario (opcional)"
+        app:layout_constraintEnd_toEndOf="@+id/tilNombreLugar"
+        app:layout_constraintStart_toStartOf="@+id/tilNombreLugar"
+        app:layout_constraintTop_toBottomOf="@+id/tilNombreLugar">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etUsuario"
+            android:id="@+id/etComentario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilPassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Contraseña"
-        app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="@+id/tilUsuario"
-        app:layout_constraintStart_toStartOf="@+id/tilUsuario"
-        app:layout_constraintTop_toBottomOf="@+id/tilUsuario">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:lines="3" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnRegistro"
+        android:id="@+id/btnActualizarLugar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:text="Registrarse"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:text="Actualizar Lugar"
         app:cornerRadius="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/tilPassword"
-        app:layout_constraintStart_toStartOf="@+id/tilPassword"
-        app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+        app:layout_constraintEnd_toEndOf="@+id/tilComentario"
+        app:layout_constraintStart_toStartOf="@+id/tilComentario"
+        app:layout_constraintTop_toBottomOf="@+id/tilComentario" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

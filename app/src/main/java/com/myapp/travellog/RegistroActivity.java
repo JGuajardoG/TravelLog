@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.myapp.travellog.db.DatabaseHelper;
 
@@ -30,6 +31,14 @@ public class RegistroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
+        // Configura la Toolbar.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         // Inicializa el ayudante de la base de datos.
         dbHelper = new DatabaseHelper(this);
 
@@ -46,6 +55,12 @@ public class RegistroActivity extends AppCompatActivity {
                 registrarUsuario();
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     /**
