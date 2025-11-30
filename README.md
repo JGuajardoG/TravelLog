@@ -76,3 +76,6 @@ El proyecto implementa las 10 `Activities` requeridas y funcionalidades CRUD com
 - [x] **9. ClimaActivity:** Consulta y muestra datos del clima desde una API REST.
 - [x] **10. AcercaDeActivity:** Información sobre el desarrollador y el proyecto (Versión 1.8).
 - [x] **Gestión Completa (CRUD):** Se ha implementado la capacidad de Crear, Leer, Actualizar y Eliminar tanto para Viajes como para Lugares.
+
+## Diagramas de clases, flujo y secuencia
+**Enlace a Google Drive:** https://drive.google.com/file/d/1ytlvGPJdNMY7BKxyUReaOmb4JaU_QJ6e/view?usp=sharing
