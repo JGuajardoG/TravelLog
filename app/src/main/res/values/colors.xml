@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Paleta de Colores Principal del Rediseño -->
+    <color name="colorPrimary">#0D47A1</color> <!-- Azul Profundo -->
+    <color name="colorPrimaryDark">#002171</color> <!-- Variante más oscura del azul -->
+    <color name="colorSecondary">#FF6D00</color> <!-- Naranja Vibrante -->
+    <color name="secondary_light">#FFE0B2</color> <!-- Naranja claro para fondos de iconos -->
+    
+    <!-- Colores de Fondo y Texto -->
+    <color name="app_background">#F5F5F5</color> <!-- Gris claro para el fondo -->
+    <color name="material_on_surface_medium_emphasis">#99000000</color> <!-- Negro con 60% de opacidad para textos secundarios -->
+
+    <!-- Color para acciones de eliminación -->
+    <color name="delete_red">#D32F2F</color>
+
+    <!-- Colores por defecto -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

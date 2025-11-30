@@ -1,16 +1,21 @@
 package com.myapp.travellog;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import com.myapp.travellog.db.DatabaseHelper;
+import com.myapp.travellog.dao.ViajeDAO;
+import com.myapp.travellog.model.Viaje;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Activity para crear un nuevo viaje.
@@ -22,8 +27,8 @@ public class CrearViajeActivity extends AppCompatActivity {
     private EditText etNombreViaje, etFecha;
     private Button btnGuardarViaje;
 
-    // Ayudante de base de datos y ID del usuario actual.
-    private DatabaseHelper dbHelper;
+    // DAO para acceder a la tabla de viajes y ID del usuario actual.
+    private ViajeDAO viajeDAO;
     private int idUsuario;
 
     @Override
@@ -31,17 +36,25 @@ public class CrearViajeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_viaje);
 
-        // Inicializa el ayudante de la base de datos.
-        dbHelper = new DatabaseHelper(this);
-        // Recupera el ID del usuario que está creando el viaje.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        viajeDAO = new ViajeDAO(this);
+        viajeDAO.open();
+
         idUsuario = getIntent().getIntExtra("id_usuario", -1);
 
-        // Vincula las vistas con sus IDs del layout.
         etNombreViaje = findViewById(R.id.etNombreViaje);
         etFecha = findViewById(R.id.etFecha);
         btnGuardarViaje = findViewById(R.id.btnGuardarViaje);
 
-        // Configura el listener para el botón de guardar.
+        // Listener para mostrar el DatePickerDialog al hacer clic en el campo de fecha.
+        etFecha.setOnClickListener(v -> showDatePickerDialog());
+
         btnGuardarViaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,46 +64,62 @@ public class CrearViajeActivity extends AppCompatActivity {
     }
 
     /**
-     * Guarda la información del nuevo viaje en la tabla 'viajes' de la base de datos.
+     * Muestra un DatePickerDialog para que el usuario seleccione una fecha.
      */
+    private void showDatePickerDialog() {
+        // Obtiene la fecha actual para mostrarla por defecto en el calendario.
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Crea el DatePickerDialog.
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    // Formatea la fecha seleccionada (ej: 25/12/2024).
+                    String selectedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", dayOfMonth, monthOfYear + 1, year1);
+                    // Establece la fecha en el EditText.
+                    etFecha.setText(selectedDate);
+                },
+                year, month, day);
+        // Muestra el diálogo.
+        datePickerDialog.show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     private void guardarViaje() {
-        // Obtiene el texto de los campos de entrada.
         String nombreViaje = etNombreViaje.getText().toString().trim();
         String fecha = etFecha.getText().toString().trim();
 
-        // Valida que los campos no estén vacíos.
         if (nombreViaje.isEmpty() || fecha.isEmpty()) {
             Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Valida que se haya recibido un ID de usuario válido.
         if (idUsuario == -1) {
             Toast.makeText(this, "Error: Usuario no identificado", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Obtiene una instancia escribible de la base de datos.
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Viaje nuevoViaje = viajeDAO.createViaje(idUsuario, nombreViaje, fecha);
 
-        // Crea un objeto ContentValues para almacenar los datos a insertar.
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_VIAJE_ID_USUARIO, idUsuario);
-        values.put(DatabaseHelper.COLUMN_VIAJE_NOMBRE, nombreViaje);
-        values.put(DatabaseHelper.COLUMN_VIAJE_FECHA, fecha);
-
-        // Ejecuta la inserción en la tabla 'viajes'.
-        long newRowId = db.insert(DatabaseHelper.TABLE_VIAJES, null, values);
-
-        // Verifica si la inserción fue exitosa.
-        if (newRowId != -1) {
+        if (nuevoViaje != null) {
             Toast.makeText(this, "Viaje guardado con éxito", Toast.LENGTH_SHORT).show();
-            finish(); // Cierra la actividad y regresa a la lista de viajes.
+            finish();
         } else {
             Toast.makeText(this, "Error al guardar el viaje", Toast.LENGTH_SHORT).show();
         }
+    }
 
-        // Cierra la conexión a la base de datos.
-        db.close();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viajeDAO.close();
     }
 }

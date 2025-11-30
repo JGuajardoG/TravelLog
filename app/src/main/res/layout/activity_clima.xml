@@ -1,39 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@color/app_background"
     tools:context=".ClimaActivity">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:title="Consultar Clima"
+        app:titleTextColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilCiudad"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Introduce una ciudad (ej: Santiago,cl)"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etCiudad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Introduce una ciudad (ej: Santiago,cl)"
             android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btnConsultarClima"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:text="Consultar Clima" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConsultarClima"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="Consultar"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilCiudad"
+        app:layout_constraintStart_toStartOf="@+id/tilCiudad"
+        app:layout_constraintTop_toBottomOf="@+id/tilCiudad" />
 
-        <TextView
-            android:id="@+id/tvResultadoClima"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardResultado"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/btnConsultarClima"
+        app:layout_constraintStart_toStartOf="@+id/btnConsultarClima"
+        app:layout_constraintTop_toBottomOf="@+id/btnConsultarClima">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Introduce una ciudad y presiona el botón."
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center_horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_weather"
+                app:tint="?attr/colorSecondary" />
 
-</ScrollView>
+            <TextView
+                android:id="@+id/tvResultadoClima"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textAlignment="center"
+                tools:text="Clima en London:\nNubes rotas\nTemperatura: 10.7 °C" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

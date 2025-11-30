@@ -1,21 +1,20 @@
 package com.myapp.travellog;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.myapp.travellog.adapter.ViajeAdapter;
-import com.myapp.travellog.db.DatabaseHelper;
+import com.myapp.travellog.dao.ViajeDAO;
 import com.myapp.travellog.model.Viaje;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,9 +26,10 @@ public class ListaViajesActivity extends AppCompatActivity {
     // Vistas de la interfaz de usuario.
     private RecyclerView rvViajes;
     private FloatingActionButton fabCrearViaje;
+    private TextView tvEmptyState;
 
     // Componentes para la base de datos y la lista.
-    private DatabaseHelper dbHelper;
+    private ViajeDAO viajeDAO;
     private ViajeAdapter viajeAdapter;
     private List<Viaje> listaViajes;
     private int idUsuario;
@@ -39,28 +39,38 @@ public class ListaViajesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_viajes);
 
-        // Inicializa el ayudante de la base de datos.
-        dbHelper = new DatabaseHelper(this);
-        // Recupera el ID del usuario actual para filtrar sus viajes.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        // Inicializa el DAO.
+        viajeDAO = new ViajeDAO(this);
+
         idUsuario = getIntent().getIntExtra("id_usuario", -1);
 
-        // Vincula las vistas con sus IDs del layout.
         rvViajes = findViewById(R.id.rvViajes);
         fabCrearViaje = findViewById(R.id.fabCrearViaje);
+        tvEmptyState = findViewById(R.id.tvEmptyState);
 
-        // Configura el RecyclerView con un LinearLayoutManager.
         rvViajes.setLayoutManager(new LinearLayoutManager(this));
 
-        // Configura el listener para el botón flotante de crear viaje.
         fabCrearViaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Inicia la actividad para crear un nuevo viaje, pasando el ID del usuario.
                 Intent intent = new Intent(ListaViajesActivity.this, CrearViajeActivity.class);
                 intent.putExtra("id_usuario", idUsuario);
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     /**
@@ -70,54 +80,39 @@ public class ListaViajesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Abre la conexión del DAO antes de usarlo.
+        viajeDAO.open();
         cargarViajes();
     }
 
     /**
-     * Carga todos los viajes asociados al ID del usuario actual desde la base de datos
-     * y los muestra en el RecyclerView.
+     * El método onPause se llama cuando la actividad deja de ser visible.
+     * Es un buen lugar para cerrar la conexión del DAO.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        viajeDAO.close();
+    }
+
+    /**
+     * Carga todos los viajes asociados al ID del usuario actual desde el DAO
+     * y los muestra en el RecyclerView. También gestiona la visibilidad del estado vacío.
      */
     private void cargarViajes() {
-        // Inicializa la lista de viajes.
-        listaViajes = new ArrayList<>();
-        // Obtiene una instancia legible de la base de datos.
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        // Usa el DAO para obtener la lista de viajes.
+        listaViajes = viajeDAO.getViajesByUsuario(idUsuario);
 
-        // Define las columnas que se quieren obtener de la tabla.
-        String[] projection = {
-                DatabaseHelper.COLUMN_VIAJE_ID,
-                DatabaseHelper.COLUMN_VIAJE_NOMBRE,
-                DatabaseHelper.COLUMN_VIAJE_FECHA
-        };
-
-        // Define la cláusula WHERE para filtrar por el ID del usuario.
-        String selection = DatabaseHelper.COLUMN_VIAJE_ID_USUARIO + " = ?";
-        String[] selectionArgs = { String.valueOf(idUsuario) };
-
-        // Realiza la consulta a la base de datos.
-        Cursor cursor = db.query(
-                DatabaseHelper.TABLE_VIAJES,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-
-        // Itera sobre el cursor para leer cada fila (viaje) y añadirlo a la lista.
-        while (cursor.moveToNext()) {
-            Viaje viaje = new Viaje();
-            viaje.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_VIAJE_ID)));
-            viaje.setNombreViaje(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_VIAJE_NOMBRE)));
-            viaje.setFecha(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_VIAJE_FECHA)));
-            listaViajes.add(viaje);
+        // Gestiona la visibilidad del estado vacío.
+        if (listaViajes.isEmpty()) {
+            rvViajes.setVisibility(View.GONE);
+            tvEmptyState.setVisibility(View.VISIBLE);
+        } else {
+            rvViajes.setVisibility(View.VISIBLE);
+            tvEmptyState.setVisibility(View.GONE);
         }
-        // Cierra el cursor y la base de datos para liberar recursos.
-        cursor.close();
-        db.close();
 
-        // Crea y establece el adaptador para el RecyclerView con la lista de viajes actualizada.
+        // Crea y establece el adaptador para el RecyclerView.
         viajeAdapter = new ViajeAdapter(this, listaViajes);
         rvViajes.setAdapter(viajeAdapter);
     }

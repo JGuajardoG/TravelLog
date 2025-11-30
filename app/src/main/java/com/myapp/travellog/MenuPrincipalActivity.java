@@ -3,18 +3,19 @@ package com.myapp.travellog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.card.MaterialCardView;
 
 /**
  * Activity que funciona como el menú principal de la aplicación después del inicio de sesión.
- * Contiene botones para navegar a las diferentes secciones principales.
+ * Contiene tarjetas de navegación a las diferentes secciones principales.
  */
 public class MenuPrincipalActivity extends AppCompatActivity {
 
     // Vistas de la interfaz de usuario.
-    private Button btnMisViajes, btnClima, btnPerfil;
+    private MaterialCardView cardMisViajes, cardClima, cardAcercaDe;
 
     // ID del usuario que ha iniciado sesión.
     private int idUsuario;
@@ -24,16 +25,20 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
 
+        // Configura la Toolbar.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         // Recupera el ID del usuario pasado desde LoginActivity.
         idUsuario = getIntent().getIntExtra("id_usuario", -1);
 
         // Vincula las vistas con sus IDs del layout.
-        btnMisViajes = findViewById(R.id.btnMisViajes);
-        btnClima = findViewById(R.id.btnClima);
-        btnPerfil = findViewById(R.id.btnPerfil);
+        cardMisViajes = findViewById(R.id.cardMisViajes);
+        cardClima = findViewById(R.id.cardClima);
+        cardAcercaDe = findViewById(R.id.cardAcercaDe);
 
-        // Configura el listener para el botón "Mis Viajes".
-        btnMisViajes.setOnClickListener(new View.OnClickListener() {
+        // Configura el listener para la tarjeta "Mis Viajes".
+        cardMisViajes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Inicia ListaViajesActivity, pasando el ID del usuario para que muestre sus viajes.
@@ -43,8 +48,8 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             }
         });
 
-        // Configura el listener para el botón "Clima".
-        btnClima.setOnClickListener(new View.OnClickListener() {
+        // Configura el listener para la tarjeta "Clima".
+        cardClima.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Inicia ClimaActivity.
@@ -52,8 +57,8 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             }
         });
 
-        // Configura el listener para el botón "Acerca de".
-        btnPerfil.setOnClickListener(new View.OnClickListener() {
+        // Configura el listener para la tarjeta "Acerca de".
+        cardAcercaDe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Inicia AcercaDeActivity.

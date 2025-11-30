@@ -1,4 +1,4 @@
-# Bitácora Viajera (TravelLog)
+# Bitácora Viajera v1.8
 
 Un proyecto de aplicación para Android desarrollada como parte de un desafío estudiantil. La aplicación permite a los usuarios registrar sus viajes, y dentro de cada viaje, añadir lugares específicos con detalles como comentarios, una foto y coordenadas geográficas.
 
@@ -11,14 +11,15 @@ Un proyecto de aplicación para Android desarrollada como parte de un desafío e
 ## Tecnologías Utilizadas
 
 - **Lenguaje:** Java
-- **Interfaz de Usuario (UI):** XML Clásico (sin Jetpack Compose)
-- **Base de Datos:** SQLite nativo (`SQLiteOpenHelper`) para almacenamiento local.
-- **Arquitectura:** Basada en Activities, con cada pantalla siendo una `Activity` independiente.
+- **Interfaz de Usuario (UI):** XML Clásico con componentes de Material Design.
+- **Base de Datos:** SQLite nativo, gestionado a través de una capa de acceso a datos (DAO) para una arquitectura limpia.
+- **Arquitectura:** Basada en Activities, con una clara separación de responsabilidades (UI -> Lógica -> DAO).
 - **API REST:** `HttpURLConnection` para consumir la API de [OpenWeatherMap](https://openweathermap.org/api).
 - **Dependencias Clave:**
   - `androidx.appcompat`
-  - `com.google.android.material` (para componentes de Material Design)
-  - `androidx.recyclerview` (para listas eficientes)
+  - `com.google.android.material`
+  - `androidx.recyclerview`
+  - `androidx.constraintlayout`
 
 ---
 
@@ -37,28 +38,25 @@ Para clonar y ejecutar este proyecto localmente, sigue estos pasos:
 3.  **Configura la API Key de OpenWeatherMap:**
     - La funcionalidad del clima requiere una clave de API.
     - Ve al archivo `app/src/main/java/com/myapp/travellog/ClimaActivity.java`.
-    - Busca la siguiente línea:
-      ```java
-      private static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?q=...&APPID=YOUR_API_KEY";
-      ```
-    - Reemplaza `YOUR_API_KEY` con tu propia clave obtenida de [OpenWeatherMap](https://openweathermap.org/appid).
+    - Busca la constante `API_KEY` y reemplaza el valor con tu propia clave obtenida de [OpenWeatherMap](https://openweathermap.org/appid).
 
 4.  **Ejecuta la aplicación:**
     - Sincroniza el proyecto con los archivos de Gradle si es necesario y luego ejecuta la aplicación en un emulador o dispositivo físico.
 
 ---
 
-## Checklist de Funcionalidades (Activities)
+## Checklist de Funcionalidades
 
-El proyecto implementa las 10 `Activities` requeridas, cubriendo el flujo completo de la aplicación.
+El proyecto implementa las 10 `Activities` requeridas y funcionalidades CRUD completas.
 
 - [x] **1. SplashActivity:** Pantalla de carga inicial.
-- [x] **2. LoginActivity:** Inicio de sesión de usuario validando contra SQLite.
-- [x] **3. RegistroActivity:** Creación de nuevos usuarios en la base de datos.
-- [x] **4. MenuPrincipalActivity:** Navegación a las secciones principales.
-- [x] **5. CrearViajeActivity:** Formulario para registrar un nuevo viaje.
-- [x] **6. ListaViajesActivity:** Muestra los viajes del usuario en un `RecyclerView`.
-- [x] **7. DetalleViajeActivity:** Muestra los lugares asociados a un viaje específico.
-- [x] **8. AgregarLugarActivity:** Formulario para añadir un lugar, usando GPS (`LocationManager`) para coordenadas y la cámara (`Intent`) para una foto.
+- [x] **2. LoginActivity:** Inicio de sesión de usuario.
+- [x] **3. RegistroActivity:** Creación de nuevos usuarios.
+- [x] **4. MenuPrincipalActivity:** Navegación principal mediante tarjetas interactivas.
+- [x] **5. CrearViajeActivity:** Formulario para registrar un nuevo viaje con selector de fecha.
+- [x] **6. ListaViajesActivity:** Muestra los viajes del usuario con botones visibles para editar y eliminar.
+- [x] **7. DetalleViajeActivity:** Muestra los lugares de un viaje con botones visibles para editar y eliminar.
+- [x] **8. AgregarLugarActivity:** Formulario para añadir un lugar usando GPS y Cámara.
 - [x] **9. ClimaActivity:** Consulta y muestra datos del clima desde una API REST.
-- [x] **10. AcercaDeActivity:** Información sobre el desarrollador y el proyecto.
+- [x] **10. AcercaDeActivity:** Información sobre el desarrollador y el proyecto (Versión 1.8).
+- [x] **Gestión Completa (CRUD):** Se ha implementado la capacidad de Crear, Leer, Actualizar y Eliminar tanto para Viajes como para Lugares.
