@@ -3,7 +3,6 @@ package com.myapp.travellog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import java.util.Locale;
 
 /**
  * Activity para editar un viaje existente.
- * Carga los datos del viaje y permite al usuario actualizarlos.
+ * Carga los datos del viaje en un formulario y permite al usuario actualizarlos.
  */
 public class EditarViajeActivity extends AppCompatActivity {
 
@@ -42,19 +41,23 @@ public class EditarViajeActivity extends AppCompatActivity {
         }
 
         viajeDAO = new ViajeDAO(this);
+        // Recupera el ID del viaje a editar, pasado desde la lista.
         idViaje = getIntent().getIntExtra("id_viaje", -1);
 
         etNombreViaje = findViewById(R.id.etNombreViaje);
         etFecha = findViewById(R.id.etFecha);
         btnActualizarViaje = findViewById(R.id.btnActualizarViaje);
 
+        // Carga los datos existentes del viaje en los campos del formulario.
         cargarDatosViaje();
 
-        // Listener para mostrar el DatePickerDialog.
         etFecha.setOnClickListener(v -> showDatePickerDialog());
         btnActualizarViaje.setOnClickListener(v -> actualizarViaje());
     }
 
+    /**
+     * Muestra un diálogo de calendario para seleccionar una fecha.
+     */
     private void showDatePickerDialog() {
         final Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -71,6 +74,9 @@ public class EditarViajeActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    /**
+     * Obtiene los datos del viaje desde la base de datos usando el DAO y los muestra en la UI.
+     */
     private void cargarDatosViaje() {
         viajeDAO.open();
         viajeActual = viajeDAO.getViajeById(idViaje);
@@ -81,10 +87,13 @@ public class EditarViajeActivity extends AppCompatActivity {
             etFecha.setText(viajeActual.getFecha());
         } else {
             Toast.makeText(this, "Error al cargar el viaje", Toast.LENGTH_SHORT).show();
-            finish();
+            finish(); // Cierra la actividad si no se puede cargar el viaje.
         }
     }
 
+    /**
+     * Recoge los datos del formulario y los actualiza en la base de datos a través del DAO.
+     */
     private void actualizarViaje() {
         String nombre = etNombreViaje.getText().toString().trim();
         String fecha = etFecha.getText().toString().trim();
@@ -100,7 +109,7 @@ public class EditarViajeActivity extends AppCompatActivity {
 
         if (rowsAffected > 0) {
             Toast.makeText(this, "Viaje actualizado con éxito", Toast.LENGTH_SHORT).show();
-            finish();
+            finish(); // Cierra la actividad y regresa a la lista.
         } else {
             Toast.makeText(this, "Error al actualizar el viaje", Toast.LENGTH_SHORT).show();
         }

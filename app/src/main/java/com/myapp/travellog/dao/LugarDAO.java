@@ -43,6 +43,10 @@ public class LugarDAO {
         dbHelper.close();
     }
 
+    /**
+     * Crea un nuevo lugar en la base de datos.
+     * @return El objeto Lugar recién creado.
+     */
     public Lugar createLugar(int idViaje, String nombre, String comentario, String fotoUri, double latitud, double longitud) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_LUGAR_ID_VIAJE, idViaje);
@@ -60,6 +64,10 @@ public class LugarDAO {
         return newLugar;
     }
 
+    /**
+     * Actualiza el nombre y comentario de un lugar existente.
+     * @return El número de filas afectadas.
+     */
     public int updateLugar(int idLugar, String nombre, String comentario) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_LUGAR_NOMBRE, nombre);
@@ -68,10 +76,17 @@ public class LugarDAO {
         return database.update(DatabaseHelper.TABLE_LUGARES, values, DatabaseHelper.COLUMN_LUGAR_ID + " = " + idLugar, null);
     }
 
+    /**
+     * Elimina un lugar de la base de datos por su ID.
+     */
     public void deleteLugar(int idLugar) {
         database.delete(DatabaseHelper.TABLE_LUGARES, DatabaseHelper.COLUMN_LUGAR_ID + " = " + idLugar, null);
     }
 
+    /**
+     * Obtiene todos los lugares asociados a un viaje específico.
+     * @return Una lista de objetos Lugar.
+     */
     public List<Lugar> getLugaresByViaje(int idViaje) {
         List<Lugar> lugares = new ArrayList<>();
         Cursor cursor = database.query(DatabaseHelper.TABLE_LUGARES, allColumns, DatabaseHelper.COLUMN_LUGAR_ID_VIAJE + " = " + idViaje, null, null, null, null);
@@ -86,6 +101,10 @@ public class LugarDAO {
         return lugares;
     }
 
+    /**
+     * Obtiene un solo lugar por su ID.
+     * @return El objeto Lugar, o null si no se encuentra.
+     */
     public Lugar getLugarById(int idLugar) {
         Cursor cursor = database.query(DatabaseHelper.TABLE_LUGARES, allColumns, DatabaseHelper.COLUMN_LUGAR_ID + " = " + idLugar, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
@@ -96,6 +115,9 @@ public class LugarDAO {
         return null;
     }
 
+    /**
+     * Método privado de utilidad para convertir una fila del Cursor a un objeto Lugar.
+     */
     private Lugar cursorToLugar(Cursor cursor) {
         Lugar lugar = new Lugar();
         lugar.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_LUGAR_ID)));
