@@ -78,4 +78,4 @@ El proyecto implementa las 10 `Activities` requeridas y funcionalidades CRUD com
 - [x] **Gestión Completa (CRUD):** Se ha implementado la capacidad de Crear, Leer, Actualizar y Eliminar tanto para Viajes como para Lugares.
 
 ## Diagramas de clases, flujo y secuencia
-**Enlace a Google Drive:** https://drive.google.com/file/d/1ytlvGPJdNMY7BKxyUReaOmb4JaU_QJ6e/view?usp=sharing
+**Enlace a Google Drive:** https://drive.google.com/drive/folders/1G_ZwOn0doboVlXSXGZX-vcveGxuKxFg_?usp=sharing
