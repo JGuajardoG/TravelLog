@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Paleta de Colores para Modo Oscuro -->
+    <color name="colorPrimary">#64B5F6</color> <!-- Azul más claro para modo oscuro -->
+    <color name="colorPrimaryDark">#2196F3</color> <!-- Azul principal -->
+    <color name="colorSecondary">#FFAB40</color> <!-- Naranja más claro -->
+    <color name="secondary_light">#433831</color> <!-- Fondo oscuro para iconos -->
+
+    <!-- Colores de Fondo y Texto para modo oscuro -->
+    <color name="app_background">#121212</color> <!-- Fondo oscuro estándar de Material Design -->
+    <color name="material_on_surface_medium_emphasis">#99FFFFFF</color> <!-- Blanco con 60% de opacidad para textos secundarios -->
+</resources>
